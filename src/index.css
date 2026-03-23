@@ -27,6 +27,8 @@ select {
 
 #root {
   min-height: 100vh;
+  display: block;
+  color: #0f172a;
 }
 
 h1 {
