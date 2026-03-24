@@ -8,16 +8,21 @@ function App() {
   const [message, setMessage] = useState('')
 
   const handleGenerate = () => {
-    if (!projectName.trim()) {
+    const trimmedProjectName = projectName.trim()
+
+    if (!trimmedProjectName) {
       setMessage('请先输入项目名')
       setResult(null)
       return
     }
 
+    const templateName =
+      template === 'meeting-summary' ? '会议纪要模板' : '周报模板'
+
     const mockResult = {
       ok: true,
-      title: '测试文档',
-      url: 'https://example.com/doc/123',
+      title: `${trimmedProjectName} - ${templateName}`,
+      url: `https://example.com/doc/${encodeURIComponent(trimmedProjectName)}`,
     }
 
     setMessage('')
