@@ -5,14 +5,22 @@ function App() {
   const [template, setTemplate] = useState('meeting-summary')
   const [projectName, setProjectName] = useState('')
   const [result, setResult] = useState(null)
+  const [message, setMessage] = useState('')
 
   const handleGenerate = () => {
+    if (!projectName.trim()) {
+      setMessage('请先输入项目名')
+      setResult(null)
+      return
+    }
+
     const mockResult = {
       ok: true,
       title: '测试文档',
       url: 'https://example.com/doc/123',
     }
 
+    setMessage('')
     setResult(mockResult)
   }
 
@@ -45,6 +53,8 @@ function App() {
         <button type="button" onClick={handleGenerate}>
           生成文档
         </button>
+
+        {message && <p className="message">{message}</p>}
 
         {result && (
           <section className="result">

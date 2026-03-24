@@ -39,6 +39,11 @@ button {
   cursor: pointer;
 }
 
+.message {
+  margin-top: 12px;
+  color: #dc2626;
+}
+
 .result {
   margin-top: 20px;
   padding-top: 16px;
