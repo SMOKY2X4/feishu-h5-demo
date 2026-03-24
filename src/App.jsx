@@ -6,8 +6,9 @@ function App() {
   const [projectName, setProjectName] = useState('')
   const [result, setResult] = useState(null)
   const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     const trimmedProjectName = projectName.trim()
 
     if (!trimmedProjectName) {
@@ -16,17 +17,24 @@ function App() {
       return
     }
 
-    const templateName =
-      template === 'meeting-summary' ? '会议纪要模板' : '周报模板'
-
-    const mockResult = {
-      ok: true,
-      title: `${trimmedProjectName} - ${templateName}`,
-      url: `https://example.com/doc/${trimmedProjectName}`,
-    }
-
+    setLoading(true)
     setMessage('')
-    setResult(mockResult)
+
+    try {
+      const response = await fetch('http://localhost:3000/api/create-doc')
+
+      if (!response.ok) {
+        throw new Error('Request failed')
+      }
+
+      const data = await response.json()
+      setResult(data)
+    } catch (error) {
+      setResult(null)
+      setMessage('接口调用失败，请检查后端服务是否启动')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -36,10 +44,7 @@ function App() {
 
         <label className="field">
           <span>模板</span>
-          <select
-            value={template}
-            onChange={(event) => setTemplate(event.target.value)}
-          >
+          <select value={template} onChange={(event) => setTemplate(event.target.value)}>
             <option value="meeting-summary">会议纪要模板</option>
             <option value="weekly-report">周报模板</option>
           </select>
@@ -55,8 +60,8 @@ function App() {
           />
         </label>
 
-        <button type="button" onClick={handleGenerate}>
-          生成文档
+        <button type="button" onClick={handleGenerate} disabled={loading}>
+          {loading ? '生成中...' : '生成文档'}
         </button>
 
         {message && <p className="message">{message}</p>}
