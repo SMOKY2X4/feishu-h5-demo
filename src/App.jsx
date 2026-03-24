@@ -21,7 +21,13 @@ function App() {
     setMessage('')
 
     try {
-      const response = await fetch('http://localhost:3000/api/create-doc')
+      const templateName =
+        template === 'meeting-summary' ? '会议纪要模板' : '周报模板'
+      const query = new URLSearchParams({
+        projectName: trimmedProjectName,
+        templateName,
+      })
+      const response = await fetch(`/api/create-doc?${query.toString()}`)
 
       if (!response.ok) {
         throw new Error('Request failed')
