@@ -22,7 +22,7 @@ function App() {
     const mockResult = {
       ok: true,
       title: `${trimmedProjectName} - ${templateName}`,
-      url: `https://example.com/doc/${encodeURIComponent(trimmedProjectName)}`,
+      url: `https://example.com/doc/${trimmedProjectName}`,
     }
 
     setMessage('')
